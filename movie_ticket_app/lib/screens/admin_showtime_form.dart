@@ -26,7 +26,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
   @override
   void initState() {
     super.initState();
-    // Đảm bảo danh sách phim đã được tải về để nhét vào Dropdown
+    
     Future.microtask(() {
       final movieProvider = Provider.of<MovieProvider>(context, listen: false);
       if (movieProvider.movies.isEmpty) {
@@ -41,12 +41,12 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
     super.dispose();
   }
 
-  // --- Hàm Chọn Ngày ---
+  
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime.now(), // Không cho chọn ngày trong quá khứ
+      firstDate: DateTime.now(), 
       lastDate: DateTime(2030),
     );
     if (picked != null && picked != _selectedDate) {
@@ -54,7 +54,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
     }
   }
 
-  // --- Hàm Chọn Giờ ---
+  
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -65,7 +65,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
     }
   }
 
-  // --- Hàm Gửi Dữ Liệu Lên Server ---
+  
   void _submit() async {
     if (!_formKey.currentState!.validate()) return;
     if (selectedMovieId == null) {
@@ -77,7 +77,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
 
     setState(() => _isLoading = true);
 
-    // Hợp nhất Ngày và Giờ thành 1 biến DateTime chuẩn ISO 8601 để gửi Backend
+    
     final combinedDateTime = DateTime(
       _selectedDate.year,
       _selectedDate.month,
@@ -86,18 +86,18 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
       _selectedTime.minute,
     );
 
-    // Lấy Token của Admin
+    
     final token = Provider.of<AuthProvider>(context, listen: false).token;
     if (token == null) return;
 
-    // Đóng gói dữ liệu gửi đi
+    
     final showtimeData = {
       'movie': selectedMovieId,
       'theaterName': _theaterController.text.trim(),
       'startTime': combinedDateTime.toIso8601String(),
     };
 
-    // Gọi API từ AdminProvider
+    
     final success = await Provider.of<AdminProvider>(context, listen: false)
         .addShowtime(showtimeData, token);
 
@@ -107,7 +107,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Thêm suất chiếu thành công!'), backgroundColor: Colors.green),
       );
-      Navigator.pop(context); // Quay lại trang danh sách
+      Navigator.pop(context); 
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Lỗi khi thêm suất chiếu!'), backgroundColor: Colors.red),
@@ -117,7 +117,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
 
   @override
   Widget build(BuildContext context) {
-    // Lắng nghe danh sách phim để đổ vào Dropdown
+    
     final movieProvider = Provider.of<MovieProvider>(context);
 
     return Scaffold(
@@ -132,7 +132,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
               const Text('Chọn Phim', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
 
-              // --- DROPDOWN CHỌN PHIM ---
+              
               DropdownButtonFormField<String>(
                 value: selectedMovieId,
                 decoration: InputDecoration(
@@ -154,7 +154,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
               const Text('Thông Tin Rạp', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
 
-              // --- TEXT INPUT TÊN RẠP ---
+              
               TextFormField(
                 controller: _theaterController,
                 decoration: InputDecoration(
@@ -170,7 +170,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
               const Text('Lịch Chiếu', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
 
-              // --- NÚT BẤM CHỌN NGÀY ---
+              
               ListTile(
                 tileColor: AppConstants.cardColor,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -181,7 +181,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
               ),
               const SizedBox(height: 12),
 
-              // --- NÚT BẤM CHỌN GIỜ ---
+              
               ListTile(
                 tileColor: AppConstants.cardColor,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -192,7 +192,7 @@ class _AdminShowtimeFormState extends State<AdminShowtimeForm> {
               ),
               const SizedBox(height: 40),
 
-              // --- NÚT LƯU ---
+              
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppConstants.primaryColor,

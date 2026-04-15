@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const moment = require('moment');
 const qs = require('qs');
 const Booking = require('../models/Booking');
-const Showtime = require('../models/Showtime'); // Import Showtime để xử lý ghế
+const Showtime = require('../models/Showtime'); 
 
 function sortObject(obj) {
     let sorted = {};
@@ -63,15 +63,15 @@ const createPaymentUrl = async (req, res) => {
     }
 };
 
-// --- HÀM HỖ TRỢ: NHẢ GHẾ (ROLLBACK) KHI THANH TOÁN LỖI ---
+
 const rollbackBooking = async (orderId) => {
     try {
         const booking = await Booking.findById(orderId);
-        // Nếu tìm thấy vé và vé này chưa được thanh toán
+        
         if (booking && !booking.isPaid) {
             const showtime = await Showtime.findById(booking.showtime);
             if (showtime) {
-                // Duyệt qua tất cả các ghế, ghế nào có trong vé này thì nhả ra (isBooked = false)
+                
                 showtime.seats.forEach(seat => {
                     if (booking.seatsBooked.includes(seat.seatNumber)) {
                         seat.isBooked = false;
@@ -79,7 +79,7 @@ const rollbackBooking = async (orderId) => {
                 });
                 await showtime.save();
             }
-            // Xoá luôn cái hoá đơn nháp này khỏi Database cho sạch
+            
             await Booking.findByIdAndDelete(orderId);
         }
     } catch (error) {
@@ -104,11 +104,11 @@ const vnpayReturn = async (req, res) => {
         let orderId = vnp_Params['vnp_TxnRef'];
 
         if (vnp_Params['vnp_ResponseCode'] == '00') {
-            // THÀNH CÔNG: Chốt đơn
+            
             await Booking.findByIdAndUpdate(orderId, { isPaid: true });
             res.send('<h1 style="color: green; text-align: center; margin-top: 50px;">Thanh toán thành công! Vui lòng quay lại ứng dụng.</h1>');
         } else {
-            // THẤT BẠI HOẶC HUỶ BỎ: Gọi hàm nhả ghế
+            
             await rollbackBooking(orderId);
             res.send('<h1 style="color: red; text-align: center; margin-top: 50px;">Giao dịch đã bị huỷ. Ghế của bạn đã được nhả ra!</h1>');
         }
@@ -135,13 +135,13 @@ const vnpayIPN = async (req, res) => {
         let rspCode = vnp_Params['vnp_ResponseCode'];
 
         if (rspCode === '00') {
-            // THÀNH CÔNG
+            
             await Booking.findByIdAndUpdate(orderId, { isPaid: true });
             res.status(200).json({ RspCode: '00', Message: 'Success' });
         } else {
-            // THẤT BẠI: Gọi hàm nhả ghế
+            
             await rollbackBooking(orderId);
-            res.status(200).json({ RspCode: '00', Message: 'Success' }); // Vẫn trả 00 cho VNPay để xác nhận đã nhận thông tin
+            res.status(200).json({ RspCode: '00', Message: 'Success' }); 
         }
     } else {
         res.status(200).json({ RspCode: '97', Message: 'Fail checksum' });

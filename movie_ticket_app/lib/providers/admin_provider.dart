@@ -47,7 +47,7 @@ class AdminProvider with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        _users.removeWhere((user) => user['_id'] == userId); // Xóa khỏi danh sách hiện tại
+        _users.removeWhere((user) => user['_id'] == userId); 
         notifyListeners();
         return true;
       }
@@ -83,7 +83,7 @@ class AdminProvider with ChangeNotifier {
     }
   }
 
-  // 2. Hàm Xóa suất chiếu
+  
   Future<bool> deleteShowtime(String showtimeId, String token) async {
     try {
       final response = await http.delete(
@@ -91,7 +91,7 @@ class AdminProvider with ChangeNotifier {
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {
-        _showtimes.removeWhere((st) => st['_id'] == showtimeId); // Cập nhật lại UI lập tức
+        _showtimes.removeWhere((st) => st['_id'] == showtimeId); 
         notifyListeners();
         return true;
       }

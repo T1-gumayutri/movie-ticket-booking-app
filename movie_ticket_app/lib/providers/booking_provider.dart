@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart'; // Thư viện mở trình duyệt
+import 'package:url_launcher/url_launcher.dart'; 
 import '../models/showtime_model.dart';
 import '../utils/constants.dart';
 
@@ -9,20 +9,18 @@ class BookingProvider with ChangeNotifier {
   List<Showtime> _showtimes = [];
   bool _isLoading = false;
 
-  // BIẾN MỚI THÊM: Lưu lại ID của vé vừa được đặt để truyền cho VNPay
+  
   String? _lastBookingId;
 
   List<dynamic> _myBookings = [];
 
-  // Getters
+  
   List<Showtime> get showtimes => _showtimes;
   bool get isLoading => _isLoading;
-  String? get lastBookingId => _lastBookingId; // Lấy ID vé ra
+  String? get lastBookingId => _lastBookingId; 
   List<dynamic> get myBookings => _myBookings;
 
-  // ---------------------------------------------------
-  // 1. LẤY DANH SÁCH SUẤT CHIẾU
-  // ---------------------------------------------------
+  
   Future<void> fetchShowtimesByMovie(String movieId) async {
     _isLoading = true;
     notifyListeners();
@@ -47,9 +45,7 @@ class BookingProvider with ChangeNotifier {
     }
   }
 
-  // ---------------------------------------------------
-  // 2. ĐẶT VÉ VÀ GIỮ CHỖ (GỌI API)
-  // ---------------------------------------------------
+ 
   Future<bool> bookTickets(String showtimeId, List<String> seatsToBook, String token, BuildContext context) async {
     _isLoading = true;
     notifyListeners();
@@ -70,7 +66,7 @@ class BookingProvider with ChangeNotifier {
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 201) {
-        // [QUAN TRỌNG]: Lưu lại ID của cái vé vừa đặt thành công vào biến
+        
         _lastBookingId = data['booking']['_id'];
 
         _isLoading = false;
@@ -94,9 +90,7 @@ class BookingProvider with ChangeNotifier {
     }
   }
 
-  // ---------------------------------------------------
-  // 3. LẤY LỊCH SỬ ĐẶT VÉ CỦA TÔI
-  // ---------------------------------------------------
+  
   Future<void> fetchMyBookings(String token) async {
     _isLoading = true;
     notifyListeners();
@@ -118,9 +112,7 @@ class BookingProvider with ChangeNotifier {
     }
   }
 
-  // ---------------------------------------------------
-  // 4. MỞ TRÌNH DUYỆT THANH TOÁN VNPAY
-  // ---------------------------------------------------
+  
   Future<void> processVNPayPayment(String bookingId, int amount, String token) async {
     try {
       final response = await http.post(
@@ -133,7 +125,7 @@ class BookingProvider with ChangeNotifier {
         final data = jsonDecode(response.body);
         final String paymentUrl = data['paymentUrl'];
 
-        // Mở URL VNPay trên trình duyệt của điện thoại
+       
         final Uri url = Uri.parse(paymentUrl);
         if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
           throw Exception('Không thể mở cổng thanh toán');

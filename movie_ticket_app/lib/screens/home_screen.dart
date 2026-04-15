@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:carousel_slider/carousel_slider.dart'; // Import thư viện
+import 'package:carousel_slider/carousel_slider.dart'; 
 import '../providers/movie_provider.dart';
 import '../widgets/movie_card.dart';
 import '../utils/constants.dart';
@@ -25,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar trong suốt để đè lên Banner
+      
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // Dùng logo ảnh (nếu bạn đã thêm ở bước 1) hoặc dùng Text cách điệu
+        
         title: Row(
           children: [
             const Icon(Icons.theaters, color: AppConstants.primaryColor, size: 30),
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (movieProvider.isLoading) return const Center(child: CircularProgressIndicator());
           if (movieProvider.movies.isEmpty) return const Center(child: Text('Chưa có phim.'));
 
-          // Lấy 3 phim đầu làm Banner
+          
           final bannerMovies = movieProvider.movies.take(3).toList();
           final listMovies = movieProvider.movies;
 
@@ -52,12 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // --- PHẦN 1: CAROUSEL BANNER ---
+                
                 CarouselSlider(
                   options: CarouselOptions(
-                    height: 500.0, // Chiều cao banner
+                    height: 500.0, 
                     autoPlay: true,
-                    viewportFraction: 1.0, // Banner tràn viền
+                    viewportFraction: 1.0, 
                   ),
                   items: bannerMovies.map((movie) {
                     return GestureDetector(
@@ -65,11 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
-                          // Ảnh nền Banner
+                          
                           movie.isBase64Poster
                               ? Image.memory(base64Decode(movie.posterUrl.split(',').last), fit: BoxFit.cover)
                               : Image.network(movie.posterUrl, fit: BoxFit.cover),
-                          // Hiệu ứng Gradient tối dần xuống dưới để thấy rõ chữ
+                          
                           Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                          // Tên phim ở trên Banner
+                          
                           Positioned(
                             bottom: 30,
                             left: 20,
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }).toList(),
                 ),
 
-                // --- PHẦN 2: DANH SÁCH PHIM VUỐT NGANG ---
+                
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 80), // Cách đáy cho khỏi bị thanh điều hướng che
+                      const SizedBox(height: 80), 
                     ],
                   ),
                 ),

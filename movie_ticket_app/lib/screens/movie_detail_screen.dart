@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import '../models/movie_model.dart';
 import '../utils/constants.dart';
 import 'showtimes_screen.dart';
-// TODO: Import trang Chọn suất chiếu sau này
-// import 'showtime_screen.dart';
+
 
 class MovieDetailScreen extends StatelessWidget {
   final Movie movie;
 
   const MovieDetailScreen({super.key, required this.movie});
 
-  // Tái sử dụng lại hàm xử lý ảnh thông minh (Base64 / Network)
+  
   Widget _buildCoverImage() {
     if (movie.posterUrl.isEmpty) {
       return Container(color: AppConstants.cardColor);
@@ -39,22 +38,22 @@ class MovieDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConstants.backgroundColor,
-      // Stack giúp đè các widget lên nhau (Chữ đè lên Ảnh)
+      
       body: Stack(
         children: [
-          // Lớp 1: Nội dung cuộn
+          
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Phần Ảnh Poster và Gradient
+                
                 Stack(
                   children: [
                     SizedBox(
                       height: 400,
                       child: _buildCoverImage(),
                     ),
-                    // Hiệu ứng Gradient mờ dần từ dưới lên (Netflix style)
+                    
                     Positioned(
                       bottom: 0,
                       left: 0,
@@ -76,7 +75,7 @@ class MovieDetailScreen extends StatelessWidget {
                   ],
                 ),
 
-                // Phần Thông tin Phim
+                
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -87,7 +86,7 @@ class MovieDetailScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
-                      // Hàng Thể loại và Thời lượng
+                      
                       Row(
                         children: [
                           Icon(Icons.schedule, size: 16, color: Colors.grey[400]),
@@ -109,7 +108,7 @@ class MovieDetailScreen extends StatelessWidget {
                         movie.description,
                         style: const TextStyle(fontSize: 14, color: Colors.grey, height: 1.5),
                       ),
-                      const SizedBox(height: 100), // Khoảng trống để không bị nút Đặt vé đè lên
+                      const SizedBox(height: 100), 
                     ],
                   ),
                 ),
@@ -117,9 +116,9 @@ class MovieDetailScreen extends StatelessWidget {
             ),
           ),
 
-          // Lớp 2: Nút Back (Quay lại) ở góc trái trên cùng
+          
           Positioned(
-            top: 40, // Cách mép trên để né tai thỏ/camera
+            top: 40, 
             left: 16,
             child: CircleAvatar(
               backgroundColor: Colors.black.withOpacity(0.5),
@@ -130,7 +129,7 @@ class MovieDetailScreen extends StatelessWidget {
             ),
           ),
 
-          // Lớp 3: Nút "Mua vé" luôn nổi ở dưới cùng
+          
           Positioned(
             bottom: 0,
             left: 0,

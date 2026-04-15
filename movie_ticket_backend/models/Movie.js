@@ -7,7 +7,7 @@ const movieSchema = new mongoose.Schema({
     trailerUrl: { type: String }, 
     genre: [{ type: String }],
     
-    // BẠN ĐANG THIẾU DÒNG NÀY 👇
+    
     duration: { type: Number, required: true, default: 120 }, 
     
     releaseDate: { type: Date }

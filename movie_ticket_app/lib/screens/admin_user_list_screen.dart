@@ -15,7 +15,7 @@ class _AdminUserListScreenState extends State<AdminUserListScreen> {
   @override
   void initState() {
     super.initState();
-    // Vừa vào màn hình là tự động gọi API lấy danh sách user
+    
     final token = Provider.of<AuthProvider>(context, listen: false).token;
     if (token != null) {
       Future.microtask(() => Provider.of<AdminProvider>(context, listen: false).fetchUsers(token));

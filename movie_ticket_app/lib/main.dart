@@ -5,20 +5,19 @@ import 'screens/main_screen.dart';
 import 'utils/constants.dart';
 import 'providers/auth_provider.dart';
 import 'screens/login_screen.dart';
-import 'providers/booking_provider.dart'; // Thêm dòng này lên đầu
+import 'providers/booking_provider.dart'; 
 import 'screens/home_screen.dart';
 import 'providers/movie_provider.dart';
 import 'providers/admin_provider.dart';
 void main() {
   runApp(
-    // Bọc app bằng MultiProvider để cung cấp AuthProvider cho toàn bộ ứng dụng
-    // Trong main.dart, sửa lại MultiProvider:
+    
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => MovieProvider()),
         ChangeNotifierProvider(create: (_) => BookingProvider()),
-        ChangeNotifierProvider(create: (_) => AdminProvider()),// THÊM DÒNG NÀY
+        ChangeNotifierProvider(create: (_) => AdminProvider()),
       ],
       child: const MovieTicketApp(),
     ),
@@ -46,16 +45,16 @@ class MovieTicketApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      // FutureBuilder giúp chạy hàm tryAutoLogin (kiểm tra token) trước khi load UI
+      
       home: FutureBuilder(
         future: Provider.of<AuthProvider>(context, listen: false).tryAutoLogin(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // Màn hình chờ (Splash Screen) trong lúc lấy token từ máy
+            
             return const Scaffold(body: Center(child: CircularProgressIndicator()));
           }
 
-          // Lắng nghe trạng thái Auth. Nếu có token -> HomeScreen, không có -> LoginScreen
+          
           return Consumer<AuthProvider>(
             builder: (context, auth, _) {
               return auth.isAuthenticated ? const MainScreen() : const LoginScreen();

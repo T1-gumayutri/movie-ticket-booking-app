@@ -15,7 +15,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  // Danh sách các màn hình
+  
   final List<Widget> _screens = [
     const HomeScreen(),
     const ProfileScreen(),
@@ -25,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedIndex],
-      // Thanh điều hướng xịn xò
+      
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [

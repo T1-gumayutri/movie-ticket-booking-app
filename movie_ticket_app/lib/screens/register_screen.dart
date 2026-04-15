@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .register(_name, _email, _password, context);
 
       if (success && mounted) {
-        Navigator.pop(context); // Quay lại trang Login/Home
+        Navigator.pop(context); 
       }
     }
   }

@@ -1,6 +1,6 @@
 const Movie = require('../models/Movie');
 const Showtime = require('../models/Showtime');
-// Lấy tất cả phim đang chiếu
+
 const getMovies = async (req, res) => {
     try {
         const movies = await Movie.find();
@@ -11,15 +11,15 @@ const getMovies = async (req, res) => {
 };
 const getShowtimesByMovie = async (req, res) => {
     try {
-        // 1. Lấy mốc thời gian hiện tại
+        
         const currentTime = new Date();
 
-        // 2. Query tìm suất chiếu với điều kiện lọc
+        
         const showtimes = await Showtime.find({ 
             movie: req.params.movieId,
-            // BÍ QUYẾT LÀ DÒNG NÀY: $gte (Greater Than or Equal) nghĩa là lớn hơn hoặc bằng
+            
             startTime: { $gte: currentTime } 
-        }).sort({ startTime: 1 }); // Tiện tay sắp xếp giờ chiếu tăng dần (từ sớm đến muộn) cho đẹp!
+        }).sort({ startTime: 1 }); 
 
         res.status(200).json(showtimes);
     } catch (error) {
@@ -46,13 +46,13 @@ const createMovie = async (req, res) => {
         res.status(500).json({ message: 'Lỗi khi tạo phim mới', error: error.message });
     }
 };
-   // Cập nhật phim (Chỉ Admin)
+   
 const updateMovie = async (req, res) => {
     try {
         const updatedMovie = await Movie.findByIdAndUpdate(
             req.params.movieId, 
             req.body, 
-            { new: true, runValidators: true } // Trả về data mới nhất
+            { new: true, runValidators: true } 
         );
         if (!updatedMovie) return res.status(404).json({ message: 'Không tìm thấy phim' });
         res.status(200).json(updatedMovie);
@@ -61,7 +61,7 @@ const updateMovie = async (req, res) => {
     }
 };
 
-// Xóa phim (Chỉ Admin)
+
 const deleteMovie = async (req, res) => {
     try {
         const movie = await Movie.findByIdAndDelete(req.params.movieId);

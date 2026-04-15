@@ -5,7 +5,7 @@ class Movie {
   final String posterUrl;
   final List<String> genre;
   final int duration;
-  // THÊM BIẾN NÀY
+  
   final bool isBase64Poster;
 
   Movie({
@@ -15,13 +15,13 @@ class Movie {
     required this.posterUrl,
     required this.genre,
     required this.duration,
-    required this.isBase64Poster, // Cập nhật Constructor
+    required this.isBase64Poster, 
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     String rawPoster = json['posterUrl'] ?? '';
 
-    // KIỂM TRA XEM CÓ PHẢI CHUỖI BASE64 KHÔNG
+    
     bool isBase64 = rawPoster.startsWith('data:image');
 
     return Movie(
@@ -33,7 +33,7 @@ class Movie {
           ? List<String>.from(json['genre'])
           : ['Chưa phân loại'],
       duration: json['duration'] ?? 0,
-      isBase64Poster: isBase64, // Gán giá trị
+      isBase64Poster: isBase64, 
     );
   }
 }

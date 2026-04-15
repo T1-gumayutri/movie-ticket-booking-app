@@ -12,7 +12,7 @@ class AdminMovieListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Quản lý Phim')),
-      // Nút cồng kềnh Thêm Phim
+     
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppConstants.primaryColor,
         icon: const Icon(Icons.add, color: Colors.white),
@@ -41,12 +41,12 @@ class AdminMovieListScreen extends StatelessWidget {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // NÚT SỬA
+                      
                       IconButton(
                         icon: const Icon(Icons.edit, color: Colors.blue),
                         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => AdminMovieFormScreen(movie: movie))),
                       ),
-                      // NÚT XOÁ
+                      
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () => _confirmDelete(context, movie.id, movie.title),

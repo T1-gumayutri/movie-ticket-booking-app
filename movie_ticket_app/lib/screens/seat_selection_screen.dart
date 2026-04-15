@@ -16,56 +16,55 @@ class SeatSelectionScreen extends StatefulWidget {
 }
 
 class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
-  // Danh sách lưu các ghế người dùng đang bấm chọn
+  
   List<String> selectedSeats = [];
-  final int ticketPrice = 80000; // Giá vé mặc định: 80k/ghế
+  final int ticketPrice = 80000; 
 
   void _toggleSeat(String seatNumber, bool isBooked) {
-    if (isBooked) return; // Ghế đã có người mua thì không cho bấm
+    if (isBooked) return; 
 
     setState(() {
       if (selectedSeats.contains(seatNumber)) {
-        selectedSeats.remove(seatNumber); // Bấm lần 2 là bỏ chọn
+        selectedSeats.remove(seatNumber); 
       } else {
-        selectedSeats.add(seatNumber); // Bấm lần 1 là chọn
+        selectedSeats.add(seatNumber); 
       }
     });
   }
 
-  // [ĐÃ CẬP NHẬT LẠI HÀM NÀY]
+  
   void _processBooking() async {
     if (selectedSeats.isEmpty) return;
 
-    // 1. Lấy token từ AuthProvider
+    
     final token = Provider.of<AuthProvider>(context, listen: false).token;
     if (token == null) return;
 
     final provider = Provider.of<BookingProvider>(context, listen: false);
 
-    // 2. Gọi API đặt vé (Lưu vé vào Database trước để giữ chỗ)
+    
     final success = await provider.bookTickets(
         widget.showtime.id, selectedSeats, token, context);
 
     if (success && mounted) {
-      // 3. Nếu đặt vé thành công và có mã Booking ID
+      
       if (provider.lastBookingId != null) {
-        // Báo cho người dùng biết đang chuyển hướng
+        
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Đang chuyển hướng sang cổng thanh toán VNPay...'),
             backgroundColor: Colors.blue,
-            duration: Duration(seconds: 2), // Hiện 2 giây thôi
+            duration: Duration(seconds: 2), 
           ),
         );
 
-        // Tính tổng tiền cần thanh toán
+        
         final totalPrice = selectedSeats.length * ticketPrice;
 
-        // Bắn dữ liệu sang VNPay và mở trình duyệt
+        
         await provider.processVNPayPayment(provider.lastBookingId!, totalPrice, token);
 
-        // Đóng màn hình chọn ghế, lùi thẳng về Home.
-        // Khi khách hàng đóng trình duyệt VNPay, họ sẽ thấy màn hình trang chủ của App.
+        
         if (mounted) {
           Navigator.popUntil(context, (route) => route.isFirst);
         }
@@ -76,7 +75,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = Provider.of<BookingProvider>(context).isLoading;
-    // Format tiền tệ VND
+    
     final currencyFormatter = NumberFormat.currency(locale: 'vi_VN', symbol: 'đ');
     final totalPrice = selectedSeats.length * ticketPrice;
 
@@ -84,7 +83,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
       appBar: AppBar(title: const Text('Chọn ghế ngồi')),
       body: Column(
         children: [
-          // --- PHẦN 1: MÀN HÌNH CHIẾU (SCREEN) ---
+          
           const SizedBox(height: 30),
           Container(
             height: 40,
@@ -97,7 +96,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(50)), // Tạo độ cong
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(50)), 
             ),
             alignment: Alignment.topCenter,
             child: const Padding(
@@ -107,12 +106,12 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
           ),
           const SizedBox(height: 30),
 
-          // --- PHẦN 2: LƯỚI GHẾ NGỒI ---
+          
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5, // Mỗi hàng 5 ghế (A1 -> A5)
+                crossAxisCount: 5, 
                 childAspectRatio: 1,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
@@ -122,10 +121,10 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                 final seat = widget.showtime.seats[index];
                 final isSelected = selectedSeats.contains(seat.seatNumber);
 
-                // Quyết định màu ghế
-                Color seatColor = Colors.grey[800]!; // Trống
-                if (seat.isBooked) seatColor = Colors.white24; // Đã bán
-                if (isSelected) seatColor = AppConstants.primaryColor; // Đang chọn
+                
+                Color seatColor = Colors.grey[800]!; 
+                if (seat.isBooked) seatColor = Colors.white24; 
+                if (isSelected) seatColor = AppConstants.primaryColor; 
 
                 return GestureDetector(
                   onTap: () => _toggleSeat(seat.seatNumber, seat.isBooked),
@@ -148,7 +147,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
             ),
           ),
 
-          // --- PHẦN 3: CHÚ THÍCH (LEGEND) ---
+          
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -161,7 +160,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
             ),
           ),
 
-          // --- PHẦN 4: THANH TOÁN (CHECKOUT) ---
+          
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -200,7 +199,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
     );
   }
 
-  // Hàm hỗ trợ vẽ chú thích nhỏ
+  
   Widget _buildLegendItem(Color color, String label) {
     return Row(
       children: [

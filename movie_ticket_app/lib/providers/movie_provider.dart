@@ -37,7 +37,7 @@ class MovieProvider with ChangeNotifier {
         body: jsonEncode(movieData),
       );
       if (response.statusCode == 201) {
-        await fetchMovies(); // Tải lại danh sách
+        await fetchMovies(); 
         return true;
       }
       return false;
@@ -46,7 +46,7 @@ class MovieProvider with ChangeNotifier {
     }
   }
 
-  // Hàm Cập nhật Phim
+  
   Future<bool> updateMovie(String movieId, Map<String, dynamic> movieData, String token) async {
     try {
       final response = await http.put(
@@ -64,7 +64,7 @@ class MovieProvider with ChangeNotifier {
     }
   }
 
-  // Hàm Xóa Phim
+ 
   Future<bool> deleteMovie(String movieId, String token) async {
     try {
       final response = await http.delete(

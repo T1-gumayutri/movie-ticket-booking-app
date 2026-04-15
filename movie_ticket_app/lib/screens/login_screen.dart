@@ -19,11 +19,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void _submit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // Gọi logic login từ Provider
+      
       final success = await Provider.of<AuthProvider>(context, listen: false)
           .login(_email, _password, context);
 
-      // Nếu thành công, app sẽ tự động chuyển trang nhờ Provider ở main.dart
+     
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Đăng nhập thành công!'), backgroundColor: Colors.green),

@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-// Load các Model
+
 const Movie = require('./models/Movie');
 const Showtime = require('./models/Showtime');
 
-// Load biến môi trường từ file .env
+
 dotenv.config();
 
-// Hàm hỗ trợ tạo sơ đồ ghế (3 hàng A, B, C; mỗi hàng 5 ghế)
+
 const generateSeats = () => {
     const rows = ['A', 'B', 'C'];
     const seats = [];
@@ -20,7 +20,7 @@ const generateSeats = () => {
     return seats;
 };
 
-// Dữ liệu mẫu (Mock Data)
+
 const moviesData = [
     {
         title: 'Dune: Part Two',
@@ -51,57 +51,57 @@ const moviesData = [
     }
 ];
 
-// Hàm chạy Seeder
+
 const importData = async () => {
     try {
-        // 1. Kết nối vào MongoDB Atlas
+        
         await mongoose.connect(process.env.MONGO_URI);
         console.log('MongoDB Connected for Seeding...');
 
-        // 2. Xóa sạch dữ liệu Phim và Suất chiếu cũ để làm mới
+        
         await Movie.deleteMany();
         await Showtime.deleteMany();
         console.log('Đã xóa dữ liệu cũ.');
 
-        // 3. Insert dữ liệu Phim mới vào Database
+        
         const createdMovies = await Movie.insertMany(moviesData);
         console.log(`Đã import ${createdMovies.length} bộ phim.`);
 
-        // 4. Tạo Suất chiếu (Showtime) cho từng bộ phim vừa được tạo
+        
         const showtimesData = [];
-        // Giả sử lấy mốc thời gian là ngày mai
+        
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
 
         createdMovies.forEach(movie => {
-            // Mỗi phim tạo 2 suất chiếu ở 2 rạp khác nhau
+            
             showtimesData.push({
-                movie: movie._id, // Lấy ID thực tế từ DB
+                movie: movie._id, 
                 theaterName: 'CGV Vincom Landmark 81',
-                startTime: new Date(tomorrow.setHours(18, 0, 0)), // 18:00 ngày mai
-                seats: generateSeats() // Tạo 15 ghế (A1 -> C5)
+                startTime: new Date(tomorrow.setHours(18, 0, 0)), 
+                seats: generateSeats() 
             });
 
             showtimesData.push({
                 movie: movie._id,
                 theaterName: 'Lotte Cinema Gò Vấp',
-                startTime: new Date(tomorrow.setHours(20, 30, 0)), // 20:30 ngày mai
+                startTime: new Date(tomorrow.setHours(20, 30, 0)), 
                 seats: generateSeats()
             });
         });
 
-        // 5. Insert dữ liệu Suất chiếu vào Database
+        
         await Showtime.insertMany(showtimesData);
         console.log(`Đã import ${showtimesData.length} suất chiếu kèm sơ đồ ghế.`);
 
         console.log('🎉 QUÁ TRÌNH SEED DỮ LIỆU THÀNH CÔNG!');
-        process.exit(); // Thoát script sau khi xong
+        process.exit(); 
 
     } catch (error) {
         console.error('❌ Lỗi khi seed dữ liệu:', error);
-        process.exit(1); // Thoát với mã lỗi
+        process.exit(1); 
     }
 };
 
-// Kích hoạt hàm chạy
+
 importData();

@@ -16,7 +16,7 @@ class _AdminBookingListScreenState extends State<AdminBookingListScreen> {
   @override
   void initState() {
     super.initState();
-    // Vừa vào màn hình là tự động kéo danh sách vé về
+    
     final token = Provider.of<AuthProvider>(context, listen: false).token;
     if (token != null) {
       Future.microtask(() => Provider.of<AdminProvider>(context, listen: false).fetchAllBookings(token));
@@ -40,15 +40,14 @@ class _AdminBookingListScreenState extends State<AdminBookingListScreen> {
             itemBuilder: (context, index) {
               final booking = provider.allBookings[index];
 
-              // Xử lý an toàn tránh lỗi null nếu lỡ xoá user hoặc xoá suất chiếu
+              
               final user = booking['user'] ?? {};
               final showtime = booking['showtime'] ?? {};
               final movie = showtime['movie'] ?? {};
 
               final userName = user['name'] ?? 'Khách đã xoá tài khoản';
 
-              // [ĐÃ CẬP NHẬT] Ưu tiên lấy tên phim đã được chụp ảnh (Snapshot) lưu cứng trong vé
-              // Nếu vé cũ chưa có snapshot thì fallback về tên phim hiện tại, nếu phim bị xóa thì báo 'Phim đã bị xoá'
+             
               final movieTitle = booking['movieTitleSnapshot']
                   ?? movie['title']
                   ?? 'Phim đã bị xoá';
@@ -64,7 +63,7 @@ class _AdminBookingListScreenState extends State<AdminBookingListScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Header Card: Tên khách hàng & Ngày đặt
+                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -80,13 +79,13 @@ class _AdminBookingListScreenState extends State<AdminBookingListScreen> {
                       ),
                       const Divider(color: Colors.white24, height: 24),
 
-                      // Body Card: Thông tin vé
+                      
                       Text('Phim: $movieTitle', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
                       const SizedBox(height: 6),
                       Text('Ghế đặt: ${booking['seatsBooked'].join(', ')}', style: const TextStyle(color: AppConstants.primaryColor)),
                       const SizedBox(height: 6),
 
-                      // Footer Card: Tổng tiền
+                      
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text(

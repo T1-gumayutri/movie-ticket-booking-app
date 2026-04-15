@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart'; // Dùng để format giờ (nhớ cài thư viện intl nếu chưa cài)
+import 'package:intl/intl.dart'; 
 import '../models/movie_model.dart';
 import '../providers/booking_provider.dart';
 import '../utils/constants.dart';
-import 'seat_selection_screen.dart'; // Thêm dòng này
+import 'seat_selection_screen.dart'; 
 class ShowtimesScreen extends StatefulWidget {
   final Movie movie;
 
@@ -18,7 +18,7 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
   @override
   void initState() {
     super.initState();
-    // Vừa vào trang là tự động gọi API lấy suất chiếu của phim này
+    
     Future.microtask(() =>
         Provider.of<BookingProvider>(context, listen: false)
             .fetchShowtimesByMovie(widget.movie.id));
@@ -45,7 +45,7 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
             itemCount: provider.showtimes.length,
             itemBuilder: (context, index) {
               final showtime = provider.showtimes[index];
-              // Format thời gian thành dạng HH:mm (vd: 18:00)
+              
               final formattedTime = DateFormat('HH:mm').format(showtime.startTime);
               final formattedDate = DateFormat('dd/MM/yyyy').format(showtime.startTime);
 
@@ -71,7 +71,7 @@ class _ShowtimesScreenState extends State<ShowtimesScreen> {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      // Nút chọn giờ chiếu
+                      
                       InkWell(
                         onTap: () {
                           Navigator.push(

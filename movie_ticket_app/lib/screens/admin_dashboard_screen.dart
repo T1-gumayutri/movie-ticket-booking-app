@@ -38,11 +38,11 @@ class AdminDashboardScreen extends StatelessWidget {
           Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminMovieListScreen()));
         }
         else if (title == 'Quản lý User') {
-          // THÊM DÒNG NÀY VÀO ĐÂY
+          
           Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminUserListScreen()));
         }
         else if (title == 'Quản lý Suất chiếu') {
-          // CẮM DÂY VÀO ĐÂY NÀY!
+          
           Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminShowtimeListScreen()));
         }
         else if (title == 'Thống kê') {

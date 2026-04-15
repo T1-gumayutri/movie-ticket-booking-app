@@ -6,7 +6,7 @@ import '../providers/auth_provider.dart';
 import '../utils/constants.dart';
 
 class AdminMovieFormScreen extends StatefulWidget {
-  final Movie? movie; // Nếu truyền vào là Sửa, không truyền là Thêm
+  final Movie? movie; 
 
   const AdminMovieFormScreen({super.key, this.movie});
 
@@ -24,12 +24,12 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
   @override
   void initState() {
     super.initState();
-    // Nếu có movie truyền vào (Chế độ Sửa), điền sẵn dữ liệu
+    
     title = widget.movie?.title ?? '';
     description = widget.movie?.description ?? '';
     posterUrl = widget.movie?.posterUrl ?? '';
     duration = widget.movie?.duration ?? 120;
-    genreString = widget.movie?.genre.join(', ') ?? ''; // Chuyển mảng thành chuỗi "Hành động, Hài"
+    genreString = widget.movie?.genre.join(', ') ?? ''; 
   }
 
   void _submit() async {
@@ -37,25 +37,25 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
     _formKey.currentState!.save();
     setState(() => isLoading = true);
 
-    // Chuẩn bị dữ liệu gửi đi
+    
     final token = Provider.of<AuthProvider>(context, listen: false).token!;
     final movieData = {
       'title': title,
       'description': description,
       'posterUrl': posterUrl,
       'duration': duration,
-      'genre': genreString.split(',').map((e) => e.trim()).toList(), // Tách chuỗi thành mảng
-      'releaseDate': DateTime.now().toIso8601String(), // Tạm mặc định là hôm nay
+      'genre': genreString.split(',').map((e) => e.trim()).toList(), 
+      'releaseDate': DateTime.now().toIso8601String(), 
     };
 
     final provider = Provider.of<MovieProvider>(context, listen: false);
     bool success;
 
     if (widget.movie == null) {
-      // CHẾ ĐỘ THÊM
+      
       success = await provider.addMovie(movieData, token);
     } else {
-      // CHẾ ĐỘ SỬA
+      
       success = await provider.updateMovie(widget.movie!.id, movieData, token);
     }
 
@@ -63,7 +63,7 @@ class _AdminMovieFormScreenState extends State<AdminMovieFormScreen> {
 
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Lưu thành công!', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
-      Navigator.pop(context); // Đóng form
+      Navigator.pop(context); 
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Có lỗi xảy ra!'), backgroundColor: Colors.red));
     }

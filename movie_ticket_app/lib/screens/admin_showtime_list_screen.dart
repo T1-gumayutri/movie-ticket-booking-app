@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../providers/admin_provider.dart';
 import '../providers/auth_provider.dart';
 import '../utils/constants.dart';
-import 'admin_showtime_form.dart'; // Import cái form chúng ta làm ở bước trước
+import 'admin_showtime_form.dart'; 
 
 class AdminShowtimeListScreen extends StatefulWidget {
   const AdminShowtimeListScreen({super.key});
@@ -33,10 +33,10 @@ class _AdminShowtimeListScreenState extends State<AdminShowtimeListScreen> {
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text('Thêm Suất Chiếu', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         onPressed: () {
-          // Bấm nút này sẽ mở trang Form mà bạn đã có code
+          
           Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminShowtimeForm()))
               .then((_) {
-            // Sau khi đóng Form thêm, tải lại danh sách
+            
             final token = Provider.of<AuthProvider>(context, listen: false).token!;
             Provider.of<AdminProvider>(context, listen: false).fetchAllShowtimes(token);
           });
@@ -52,7 +52,7 @@ class _AdminShowtimeListScreenState extends State<AdminShowtimeListScreen> {
             itemCount: provider.showtimes.length,
             itemBuilder: (context, index) {
               final showtime = provider.showtimes[index];
-              // Bảo vệ nếu lỡ movie bị xóa mà showtime vẫn còn
+              
               final movieTitle = showtime['movie']?['title'] ?? 'Phim đã bị xóa';
               final startTime = DateTime.parse(showtime['startTime']);
 
